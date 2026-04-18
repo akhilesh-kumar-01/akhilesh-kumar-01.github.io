@@ -219,6 +219,82 @@
       transform: rotate(-90deg) scale(0);
     }
 
+    /* ─── Mobile Menu Toggle ─────────────────────────── */
+    .menu-toggle {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      transition: all 0.3s;
+      z-index: 1001;
+      margin-left: 1rem;
+    }
+
+    .menu-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ─── Mobile Overlay ─────────────────────────────── */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .mobile-nav-links a {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--muted);
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .mobile-nav-links a:hover {
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .mobile-nav-links a.active {
+      color: var(--accent);
+    }
+
     /* ─── Hero ───────────────────────────────────────── */
     #hero {
       min-height: 100vh;
@@ -284,7 +360,7 @@
 
     .hero-name {
       font-family: var(--font-head);
-      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-size: clamp(2.5rem, 8vw, 8rem);
       font-weight: 800;
       line-height: 0.95;
       letter-spacing: -0.04em;
@@ -864,6 +940,14 @@
         display: none;
       }
 
+      .menu-toggle {
+        display: flex;
+      }
+
+      .theme-toggle {
+        margin-left: auto;
+      }
+
       #hero {
         padding: 6rem 1.5rem 3rem;
       }
@@ -906,6 +990,23 @@
       .hero-socials {
         margin-left: 0;
         margin-top: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-name {
+        font-size: 2.2rem;
+        line-height: 1.1;
+      }
+
+      .hero-tag {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.75rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
       }
     }
 
@@ -973,6 +1074,12 @@
         <li><a href="#certifications">Certs</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24">
+          <line x1="4" y1="8" x2="20" y2="8" />
+          <line x1="4" y1="16" x2="20" y2="16" />
+        </svg>
+      </button>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="sun-icon" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="5" />
@@ -1329,6 +1436,7 @@
 
   <!-- ── JAVASCRIPT ─────────────────────────────────── -->
   <script>
+    window.addEventListener('DOMContentLoaded', () => {
     /* ── Page Loader ── */
     const loaderEl = document.getElementById('loaderText');
     const loaderText = 'AKHILESH.';
@@ -1422,7 +1530,53 @@
         a.style.color = a.getAttribute('href') === '#' + current ? '#c8f135' : '';
       });
     });
+
+    /* ── Mobile Menu Toggle ── */
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+
+    function closeMenu() {
+      mobileNav.classList.remove('active');
+      menuToggle.querySelector('svg').innerHTML = '<line x1="4" y1="8" x2="20" y2="8" /><line x1="4" y1="16" x2="20" y2="16" />';
+    }
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = mobileNav.classList.contains('active');
+      if (isActive) {
+        closeMenu();
+      } else {
+        mobileNav.classList.add('active');
+        menuToggle.querySelector('svg').innerHTML = '<line x1="6" y1="6" x2="18" y2="18" /><line x1="6" y1="18" x2="18" y2="6" />';
+      }
+    });
+
+    // Close on backdrop click (clicking outside the links)
+    mobileNav.addEventListener('click', (e) => {
+      if (e.target === mobileNav) {
+        closeMenu();
+      }
+    });
+
+    // Close menu on link click
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+    });
   </script>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav" id="mobileNav">
+    <ul class="mobile-nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </body>
 
 </html>
