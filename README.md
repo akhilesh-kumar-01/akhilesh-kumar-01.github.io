@@ -19,7 +19,7 @@ Personal portfolio website showcasing my projects, skills, and experience as a B
 
 ## 📬 Contact
 - GitHub: github.com/akhilesh-kumar-01
-- Email: freenom70526@gmail.com
+- Email: akhilesh70526@gmail.com
 
 ---
 *Made with dedication by Akhilesh Kumar*
