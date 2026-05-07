@@ -12,10 +12,6 @@ Personal portfolio website showcasing my projects, skills, and experience as a B
 - Responsive Design
 
 ## 📌 Featured Projects
-- **Real-Time Chat App** — Node.js, React, MySQL, Socket.io
-- **PaisaWise** — Fintech Android app
-- **DocFusion** — Document management app
-- **EduTube** — EdTech platform
 
 ## 📬 Contact
 - GitHub: github.com/akhilesh-kumar-01
